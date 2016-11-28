@@ -1,6 +1,7 @@
 {
     "require": {
-        "overtrue/pinyin": "~3.0"
+        "overtrue/pinyin": "~3.0",
+        "larapack/dd": "^1.0"
     },
     "repositories": {
         "packagist": {
