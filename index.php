@@ -34,12 +34,11 @@ function post_curl($url,$post_data)
 }
 
 
-dd(123);
 class Recite{
 
     public $content;
 
-    public function __construct()
+    public function __construct($content)
     {
         $this->content = "
         吃葡萄不吐葡萄皮,不吃葡萄倒吐葡萄皮
@@ -57,68 +56,71 @@ class Recite{
 
         大哲学家罗素列出了9大原因。
         ";
-        // return $this->content;
+        }
+    public function convert()
+    {
+        $dick = $this->getDick($this->content);
+        $fragment = $this->getFragment($dick);
+        var_dump($fragment);
     }
-    // public  
+
+    private function getFragment($dick)
+    {
+        $result = [];
+        foreach ($dick as $key => $word) {
+            $result[] = substr($content,0,strpos($content,$word));
+            $result[] = [$word];
+            $content = substr($content,strpos($content,$word)+strlen($word));
+        }
+        $result[] = $content;
+        return $result;
+    }
+
+    public function getDick($content)
+    {           
+        $url = "http://www.pullword.com/process.php";
+        $param = array(
+                "param1" => "0.9",
+                "param2" => "0",
+                "source" => $content,
+            );
+
+        $res = post_curl($url, $param);
+
+        $dick = explode("\r\n",$res);
+
+        $dick = array_slice($dick,6);
+
+        $dick = array_filter($dick);
+
+        return $this->filteRepeat($dick);
+    }
+
+    /** 删除类似 葡萄 葡萄皮中的葡萄 */
+    private function filteRepeat($dick)
+    {
+        foreach (range(1,3) as $j) {
+            foreach ($dick as $key => $word) {
+                if(isset($dick[$key-1]))
+                    if(strpos($word,$dick[$key-1]))
+                        unset($dick[$key-1]);
+
+                if(isset($dick[$key+1]))
+                    if(strpos($word,$dick[$key+1]))
+                        unset($dick[$key+1]);
+            }
+            $dick = array_values($dick);
+        }
+        return $dick;
+    }
 }
 
-$content = $_GET['content']?:'李彦宏是马云最大威胁嘛？';
+
+// $content = $_GET['content']?:'李彦宏是马云最大威胁嘛？';
 
 $result = new Recite($content);
 
-dd($result);
-
-
-
-
-
-
-// $url = "http://www.pullword.com/process.php";
-// $param = array(
-//         "param1" => "0.9",
-//         "param2" => "0",
-//         "source" => $content,
-//     );
-
-// $res = post_curl($url, $param);
-
-// $dick = explode("\r\n",$res);
-
-// $dick = array_slice($dick,6);
-
-// $dick = array_filter($dick);
-
-// var_dump($dick);
-
-
-// /** 删除类似 葡萄 葡萄皮中的葡萄 */
-// foreach (range(1,3) as $j) {
-//     foreach ($dick as $key => $word) {
-//         if(isset($dick[$key-1]))
-//             if(strpos($word,$dick[$key-1]))
-//                 unset($dick[$key-1]);
-
-//         if(isset($dick[$key+1]))
-//             if(strpos($word,$dick[$key+1]))
-//                 unset($dick[$key+1]);
-//     }
-//     $dick = array_values($dick);
-// }
-
-
-
-// $result = [];
-// foreach ($dick as $key => $word) {
-//     $result[] = substr($content,0,strpos($content,$word));
-//     $result[] = $word;
-//     $content = substr($content,strpos($content,$word)+strlen($word));
-// }
-// $result[] = $content;
-
-
-
-// dd($result);
-
+var_dump($result->convert());
 
 
 // use Overtrue\Pinyin\Pinyin;
