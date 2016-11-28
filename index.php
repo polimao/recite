@@ -34,7 +34,7 @@ function post_curl($url,$post_data)
 }
 
 
-
+dd(123);
 class Recite{
 
     public $content;
@@ -57,12 +57,14 @@ class Recite{
 
         大哲学家罗素列出了9大原因。
         ";
+        // return $this->content;
     }
+    // public  
 }
 
 $content = $_GET['content']?:'李彦宏是马云最大威胁嘛？';
 
-$result = Recite::init($content);
+$result = new Recite($content);
 
 dd($result);
 
@@ -71,65 +73,65 @@ dd($result);
 
 
 
-$url = "http://www.pullword.com/process.php";
-$param = array(
-        "param1" => "0.9",
-        "param2" => "0",
-        "source" => $content,
-    );
+// $url = "http://www.pullword.com/process.php";
+// $param = array(
+//         "param1" => "0.9",
+//         "param2" => "0",
+//         "source" => $content,
+//     );
 
-$res = post_curl($url, $param);
+// $res = post_curl($url, $param);
 
-$dick = explode("\r\n",$res);
+// $dick = explode("\r\n",$res);
 
-$dick = array_slice($dick,6);
+// $dick = array_slice($dick,6);
 
-$dick = array_filter($dick);
+// $dick = array_filter($dick);
 
-var_dump($dick);
-
-
-/** 删除类似 葡萄 葡萄皮中的葡萄 */
-foreach (range(1,3) as $j) {
-    foreach ($dick as $key => $word) {
-        if(isset($dick[$key-1]))
-            if(strpos($word,$dick[$key-1]))
-                unset($dick[$key-1]);
-
-        if(isset($dick[$key+1]))
-            if(strpos($word,$dick[$key+1]))
-                unset($dick[$key+1]);
-    }
-    $dick = array_values($dick);
-}
+// var_dump($dick);
 
 
+// /** 删除类似 葡萄 葡萄皮中的葡萄 */
+// foreach (range(1,3) as $j) {
+//     foreach ($dick as $key => $word) {
+//         if(isset($dick[$key-1]))
+//             if(strpos($word,$dick[$key-1]))
+//                 unset($dick[$key-1]);
 
-$result = [];
-foreach ($dick as $key => $word) {
-    $result[] = substr($content,0,strpos($content,$word));
-    $result[] = $word;
-    $content = substr($content,strpos($content,$word)+strlen($word));
-}
-$result[] = $content;
+//         if(isset($dick[$key+1]))
+//             if(strpos($word,$dick[$key+1]))
+//                 unset($dick[$key+1]);
+//     }
+//     $dick = array_values($dick);
+// }
 
 
 
-dd($result);
+// $result = [];
+// foreach ($dick as $key => $word) {
+//     $result[] = substr($content,0,strpos($content,$word));
+//     $result[] = $word;
+//     $content = substr($content,strpos($content,$word)+strlen($word));
+// }
+// $result[] = $content;
 
 
 
-use Overtrue\Pinyin\Pinyin;
+// dd($result);
 
-$pinyin = new Pinyin();
 
-foreach ($dick as $key => $word) {
-    if($word >= 'A' && $word <='z')
-        continue;
-    $syllable = $pinyin->convert($word,PINYIN_UNICODE);
-    var_dump($syllable);
 
-}
+// use Overtrue\Pinyin\Pinyin;
+
+// $pinyin = new Pinyin();
+
+// foreach ($dick as $key => $word) {
+//     if($word >= 'A' && $word <='z')
+//         continue;
+//     $syllable = $pinyin->convert($word,PINYIN_UNICODE);
+//     var_dump($syllable);
+
+// }
 
 
 
