@@ -2,45 +2,17 @@
 
 require 'vendor/autoload.php';
 
-function dd()
-{
-    $param = func_get_args();
-    foreach ($param as $key => &$value) {
-        is_array($value) and $value = json_encode($value,JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
-    }
-    $print = join($param,"\t");
-    echo $print;
-    die();
-}
-
-function post_curl($url,$post_data)
-{
-    $ch = curl_init();
-    curl_setopt($ch, CURLOPT_URL, $url);
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-    curl_setopt($ch, CURLOPT_POST, true);
-    curl_setopt($ch, CURLOPT_POSTFIELDS, $post_data);
-    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-    curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
-
-    $result = curl_exec($ch);
-    if(!$result){
-        dd('error','cUrl', $url ,json_encode($post_data));
-        return false;
-    }
-    curl_close($ch);
-
-    return $result;
-}
-
+use Overtrue\Pinyin\Pinyin;
 
 class Recite{
 
     public $content;
+    public $curl;
+    public $pinyin;
 
-    public function __construct($content)
+    public function __construct($content = NULL)
     {
-        $this->content = "
+        $this->content = $content?:"
         吃葡萄不吐葡萄皮,不吃葡萄倒吐葡萄皮
         你为什么不快乐？
 
@@ -56,12 +28,66 @@ class Recite{
 
         大哲学家罗素列出了9大原因。
         ";
-        }
+
+        $this->content = '吃葡萄不吐葡萄皮9不吃葡萄倒吐葡萄皮9你为什么不快乐9大部分人肯定会耸耸肩说9没钱呗9可是你有钱就会变得快乐吗9不见得9你现在肯定比上学时有钱9可是你却不如那时候快乐9那你究竟是为什么不快乐呢9大哲学家罗素列出了九大原因';
+
+        // $this->content = '吃葡萄不吐葡萄皮';
+
+
+        $this->curl = new Curl();
+        $this->pinyin = new Pinyin();
+    }
     public function convert()
     {
-        $dick = $this->getDick($this->content);
-        $fragment = $this->getFragment($dick);
-        var_dump($fragment);
+        // $dick = $this->getDick($this->content);
+        // $fragment = $this->getFragment($dick);
+        // var_dump($fragment);
+        //
+        //
+        // $this->normFilter();
+        // echo $this->content;
+
+        $this->toSyllable();
+dd(1);
+        $fragment = explode('',trim($this->content));
+        dd($this->content,$fragment);
+    }
+
+    private function normFilter()
+    {
+        $this->content = trim($this->content);
+        $this->content = str_replace([1,2,3,4,5,6,7,8,9,0],['一','二','三','四','五','六','七','八','九','零'],$this->content);
+        $this->content = str_replace(['“','”','：','！','？','，','、','。','.',',','?','!','…',"\n","\t",' '],'9',$this->content);
+        $this->content = preg_replace('/9+/','9',$this->content);
+    }
+
+    private function toSyllable()
+    {
+
+        // $syllable = $this->pinyin->convert($this->content,PINYIN_UNICODE);
+        $syllables = [];
+        for ($i=0; $i < mb_strlen($this->content); $i++) {
+            $abc = mb_substr($this->content,$i,1);
+            $key = $this->pinyin->convert($abc,PINYIN_UNICODE);
+            $syllables[] = [$key[0],$abc];
+        // dd(12);
+        }
+
+
+        dd($syllables);
+
+        // foreach ($dick as $key => $word) {
+        //     if($word >= 'A' && $word <='z')
+        //         continue;
+        //     $syllable = $pinyin->convert($word,PINYIN_UNICODE);
+        //     var_dump($syllable);
+
+        // }
+
+
+
+        // ["dài","zhe","xī","wàng","qù","lǚ","xíng","bǐ","dào","dá","zhōng","diǎn","gèng","měi","hǎo"]
+
     }
 
     private function getFragment($dick)
@@ -76,16 +102,17 @@ class Recite{
         return $result;
     }
 
-    public function getDick($content)
-    {           
-        $url = "http://www.pullword.com/process.php";
+    private function getDick($content)
+    {
+        $url = "www.pullword.com/process.php";
         $param = array(
                 "param1" => "0.9",
                 "param2" => "0",
                 "source" => $content,
             );
+        $curl = new Curl();
 
-        $res = post_curl($url, $param);
+        $res = $this->curl->post($url, $param);
 
         $dick = explode("\r\n",$res);
 
@@ -116,28 +143,9 @@ class Recite{
 }
 
 
-// $content = $_GET['content']?:'李彦宏是马云最大威胁嘛？';
-
-$result = new Recite($content);
+$result = new Recite();
 
 var_dump($result->convert());
-
-
-// use Overtrue\Pinyin\Pinyin;
-
-// $pinyin = new Pinyin();
-
-// foreach ($dick as $key => $word) {
-//     if($word >= 'A' && $word <='z')
-//         continue;
-//     $syllable = $pinyin->convert($word,PINYIN_UNICODE);
-//     var_dump($syllable);
-
-// }
-
-
-
-// ["dài","zhe","xī","wàng","qù","lǚ","xíng","bǐ","dào","dá","zhōng","diǎn","gèng","měi","hǎo"]
 
 
 

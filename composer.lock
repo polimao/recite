@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "f4f519cfcdf98792c7de116a8e2f6a5f",
-    "content-hash": "097e9a60a093af6074e1e71bc076b0c1",
+    "hash": "d9de35c85651ad6a0d328ebaa52763ae",
+    "content-hash": "eb3e60613d82687153db340ac4143248",
     "packages": [
         {
             "name": "larapack/dd",
@@ -87,6 +87,39 @@
                 "cn2pinyin"
             ],
             "time": "2016-08-17 12:05:07"
+        },
+        {
+            "name": "shuber/curl",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/hamstar/curl.git",
+                "reference": "6624992df201f9fd7262080117385dd09b0ecd2b"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://packagist.phpcomposer.com/files/hamstar/curl/6624992df201f9fd7262080117385dd09b0ecd2b.zip",
+                "reference": "6624992df201f9fd7262080117385dd09b0ecd2b",
+                "shasum": ""
+            },
+            "type": "library",
+            "autoload": {
+                "files": [
+                    "curl.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "PHP Wrapper for Curl",
+            "keywords": [
+                "bot",
+                "curl",
+                "scraper",
+                "spider"
+            ],
+            "time": "2013-11-23 01:44:31"
         },
         {
             "name": "symfony/polyfill-mbstring",
@@ -214,7 +247,9 @@
     "packages-dev": [],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": [],
+    "stability-flags": {
+        "shuber/curl": 20
+    },
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": [],

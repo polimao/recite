@@ -209,5 +209,40 @@
             }
         ],
         "description": "`dd` is a helper method in Laravel. This package will add the `dd` to your application."
+    },
+    {
+        "name": "shuber/curl",
+        "version": "dev-master",
+        "version_normalized": "9999999-dev",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/hamstar/curl.git",
+            "reference": "6624992df201f9fd7262080117385dd09b0ecd2b"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://packagist.phpcomposer.com/files/hamstar/curl/6624992df201f9fd7262080117385dd09b0ecd2b.zip",
+            "reference": "6624992df201f9fd7262080117385dd09b0ecd2b",
+            "shasum": ""
+        },
+        "time": "2013-11-23 01:44:31",
+        "type": "library",
+        "installation-source": "source",
+        "autoload": {
+            "files": [
+                "curl.php"
+            ]
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "description": "PHP Wrapper for Curl",
+        "keywords": [
+            "bot",
+            "curl",
+            "scraper",
+            "spider"
+        ]
     }
 ]

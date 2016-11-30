@@ -1,7 +1,8 @@
 {
     "require": {
         "overtrue/pinyin": "~3.0",
-        "larapack/dd": "^1.0"
+        "larapack/dd": "^1.0",
+        "shuber/curl": "dev-master"
     },
     "repositories": {
         "packagist": {
