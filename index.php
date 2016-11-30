@@ -4,91 +4,97 @@ require 'vendor/autoload.php';
 
 use Overtrue\Pinyin\Pinyin;
 
-class Recite{
+class Syllable{
 
     public $content;
+    public $dick;
     public $curl;
     public $pinyin;
+
+    public $sb0 = '1';
+    public $sb1 = '2';
+    public $sb2 = '9';
 
     public function __construct($content = NULL)
     {
         $this->content = $content;
-
         $this->curl = new Curl();
         $this->pinyin = new Pinyin();
     }
     public function convert()
     {
-        // $dick = $this->getDick($this->content);
-        // $fragment = $this->getFragment($dick);
-        // var_dump($fragment);
-        //
-        //
         $this->normFilter();
-        // echo $this->content;
-dd($this->content);
-        $this->toSyllable();
-dd($this->content);
-        $fragment = explode('',trim($this->content));
-        dd($this->content,$fragment);
+        // 吃葡萄不吐葡萄皮9不吃葡萄倒吐葡萄皮9
+        $this->getDick();
+  // array[
+  // 0 => "吃葡萄"
+  // 1 => "不吃"
+  // 2 => "葡萄皮"
+  // ]
+        $fragments = $this->getFragment();
+// array[
+//   0 => "吃葡萄不吐葡萄皮9"
+//   1 => array[
+//     0 => "不吃"
+//   ]
+//   2 => "葡萄倒吐"
+//   3 => array[
+//     0 => "葡萄皮"
+//   ]
+//   4 => "9你"
+// ]
+        $gap_content = $this->getGapContent($fragments);
+        // 吃0葡0萄0不0吐0葡0萄0皮09不1吃0葡0萄0倒0吐0葡1萄1皮09
+        // dd ($gap_content);
+        $pinyin = $this->pinyin->convert($gap_content,PINYIN_UNICODE);
+        return $pinyin;
+    }
+
+    private function getGapContent($fragments)
+    {
+        $result = '';
+        foreach ($fragments as $key => $fragment) {
+            if(is_string($fragment)){
+                $result .= preg_replace('/([\x{4e00}-\x{9fa5}])/iu', '${1}' . $this->sb0, $fragment);
+            }
+            if(is_array($fragment)){
+                $result .= preg_replace('/([\x{4e00}-\x{9fa5}])/iu', '${1}' . $this->sb1, $fragment[0]);
+                $result = rtrim($result, $this->sb1) . $this->sb0;
+            }
+        }
+        return $result;
     }
 
     private function normFilter()
     {
         $this->content = trim($this->content);
         $this->content = str_replace([1,2,3,4,5,6,7,8,9,0],['一','二','三','四','五','六','七','八','九','零'],$this->content);
-        $this->content = str_replace(['“','”','：','！','？','，','、','。','.',',','?','!','…',"\n","\t",' '],'9',$this->content);
-        $this->content = preg_replace('/9+/','9',$this->content);
+        $this->content = str_replace(['“','”','：','！','？','，','、','。','.',',','?','!','…',"\n","\r","\t",' '],$this->sb2,$this->content);
+        $this->content = preg_replace('/' . $this->sb2 . '+/',$this->sb2,$this->content);
     }
 
-    private function toSyllable()
+    private function getFragment()
     {
-
-        // $syllable = $this->pinyin->convert($this->content,PINYIN_UNICODE);
-        $syllables = [];
-        for ($i=0; $i < mb_strlen($this->content); $i++) {
-            $abc = mb_substr($this->content,$i,1);
-            $key = $this->pinyin->convert($abc,PINYIN_UNICODE);
-            $syllables[] = [$key[0],$abc];
-        // dd(12);
+        $tmp_content = $this->content;
+        $fragments = [];
+        foreach ($this->dick as $key => $word) {
+            if(strpos($tmp_content,$word) == 0)
+                continue;
+            $fragments[] = substr($tmp_content,0,strpos($tmp_content,$word));
+            $fragments[] = [$word];
+            $tmp_content = substr($tmp_content,strpos($tmp_content,$word)+strlen($word));
         }
-
-
-        dd($syllables);
-
-        // foreach ($dick as $key => $word) {
-        //     if($word >= 'A' && $word <='z')
-        //         continue;
-        //     $syllable = $pinyin->convert($word,PINYIN_UNICODE);
-        //     var_dump($syllable);
-
-        // }
-
-
-
-        // ["dài","zhe","xī","wàng","qù","lǚ","xíng","bǐ","dào","dá","zhōng","diǎn","gèng","měi","hǎo"]
-
+        $fragments[] = $tmp_content;
+        return $fragments;
     }
 
-    private function getFragment($dick)
-    {
-        $result = [];
-        foreach ($dick as $key => $word) {
-            $result[] = substr($content,0,strpos($content,$word));
-            $result[] = [$word];
-            $content = substr($content,strpos($content,$word)+strlen($word));
-        }
-        $result[] = $content;
-        return $result;
-    }
-
-    private function getDick($content)
+    private function getDick()
     {
         $url = "www.pullword.com/process.php";
         $param = array(
                 "param1" => "0.9",
                 "param2" => "0",
-                "source" => $content,
+                "source" => $this->content,
             );
         $curl = new Curl();
 
@@ -96,11 +102,9 @@ dd($this->content);
 
         $dick = explode("\r\n",$res);
 
-        $dick = array_slice($dick,6);
+        $dick = array_slice($dick,15);
 
-        $dick = array_filter($dick);
-
-        return $this->filteRepeat($dick);
+        $this->dick = array_filter($dick); 
     }
 
     /** 删除类似 葡萄 葡萄皮中的葡萄 */
@@ -123,7 +127,7 @@ dd($this->content);
 }
 
 
-$result = new Recite("
+$syllable = new Syllable("
         吃葡萄不吐葡萄皮,不吃葡萄倒吐葡萄皮
         你为什么不快乐？
         大部分人肯定会耸耸肩说：“没钱呗！”
@@ -134,7 +138,7 @@ $result = new Recite("
         大哲学家罗素列出了9大原因。
         ");
 
-var_dump($result->convert());
+echo json_encode($syllable->convert());
 
 
 
