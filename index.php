@@ -12,27 +12,7 @@ class Recite{
 
     public function __construct($content = NULL)
     {
-        $this->content = $content?:"
-        吃葡萄不吐葡萄皮,不吃葡萄倒吐葡萄皮
-        你为什么不快乐？
-
-        大部分人肯定会耸耸肩说：“没钱呗！”
-
-        可是你有钱就会变得快乐吗？
-
-        不见得，你现在肯定比上学时有钱，
-
-        可是你却不如那时候快乐。
-
-        那你究竟是为什么不快乐呢？
-
-        大哲学家罗素列出了9大原因。
-        ";
-
-        $this->content = '吃葡萄不吐葡萄皮9不吃葡萄倒吐葡萄皮9你为什么不快乐9大部分人肯定会耸耸肩说9没钱呗9可是你有钱就会变得快乐吗9不见得9你现在肯定比上学时有钱9可是你却不如那时候快乐9那你究竟是为什么不快乐呢9大哲学家罗素列出了九大原因';
-
-        // $this->content = '吃葡萄不吐葡萄皮';
-
+        $this->content = $content;
 
         $this->curl = new Curl();
         $this->pinyin = new Pinyin();
@@ -44,11 +24,11 @@ class Recite{
         // var_dump($fragment);
         //
         //
-        // $this->normFilter();
+        $this->normFilter();
         // echo $this->content;
-
+dd($this->content);
         $this->toSyllable();
-dd(1);
+dd($this->content);
         $fragment = explode('',trim($this->content));
         dd($this->content,$fragment);
     }
@@ -143,7 +123,16 @@ dd(1);
 }
 
 
-$result = new Recite();
+$result = new Recite("
+        吃葡萄不吐葡萄皮,不吃葡萄倒吐葡萄皮
+        你为什么不快乐？
+        大部分人肯定会耸耸肩说：“没钱呗！”
+        可是你有钱就会变得快乐吗？
+        不见得，你现在肯定比上学时有钱，
+        可是你却不如那时候快乐。
+        那你究竟是为什么不快乐呢？
+        大哲学家罗素列出了9大原因。
+        ");
 
 var_dump($result->convert());
 
