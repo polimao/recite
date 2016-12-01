@@ -1,0 +1,43 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+	<title>Document</title>
+
+</head>
+<body>
+	<audio src="storage/dǎo.wav"</audio>
+	<audio src="storage/gān.wav"></audio>
+	<audio src="storage/he.wav"></audio>
+	<audio src="storage/jì.wav"></audio>
+	<audio src="storage/mì.wav"></audio>
+	<audio src="storage/qián.wav"></audio>
+	<audio src="storage/qí.wav"></audio>
+	<audio src="storage/qíng.wav"></audio>
+
+	<script>
+		var audios = document.getElementsByTagName("audio"); 
+		
+		function player(num){
+			audios[num].play();
+			audios[num].loop = false;
+			audios[num].addEventListener('ended', function () {  
+				num++;
+				player(num);
+			 //    setTimeout(function(){
+			 //    	if(num<5){
+				//     	++num;
+				//     	player(num)
+				//     	console.log(num)
+				//     }
+				// },2000);
+			    return;
+			}, false);
+			console.log('----------'+num)
+		}
+
+		player(0);
+		
+	</script>
+</body>
+</html>
