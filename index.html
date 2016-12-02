@@ -6,7 +6,7 @@
 
 </head>
 <body>
-	<audio src="storage/dǎo.wav"</audio>
+	<audio src="storage/dǎo.wav" gap=test></audio>
 	<audio src="storage/gān.wav"></audio>
 	<audio src="storage/he.wav"></audio>
 	<audio src="storage/jì.wav"></audio>
@@ -16,28 +16,33 @@
 	<audio src="storage/qíng.wav"></audio>
 
 	<script>
-		var audios = document.getElementsByTagName("audio"); 
-		
+		var audios = document.getElementsByTagName("audio");
+
 		function player(num){
+			if(audios[num] == undefined)
+				return;
 			audios[num].play();
 			audios[num].loop = false;
-			audios[num].addEventListener('ended', function () {  
+			console.log(audios[num]);
+			audios[num].addEventListener('ended', function () {
+				var gap = audios[num].getAttribute('gap');
+				if(!gap)
+					gap = 0;
+				console.log('num:' + num + '  |  ' + 'gap:' + gap);
 				num++;
-				player(num);
-			 //    setTimeout(function(){
-			 //    	if(num<5){
-				//     	++num;
-				//     	player(num)
-				//     	console.log(num)
-				//     }
-				// },2000);
+
+			    setTimeout(function(){
+			    	player(num)
+				},gap);
 			    return;
 			}, false);
-			console.log('----------'+num)
+
 		}
 
-		player(0);
-		
+
+		    	player(0);
+
+
 	</script>
 </body>
 </html>
