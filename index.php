@@ -104,7 +104,7 @@ class Syllable{
 
         $dick = array_slice($dick,15);
 
-        $this->dick = array_filter($dick); 
+        $this->dick = array_filter($dick);
     }
 
     /** 删除类似 葡萄 葡萄皮中的葡萄 */
@@ -138,7 +138,9 @@ $syllable = new Syllable("
         大哲学家罗素列出了9大原因。
         ");
 
-echo json_encode($syllable->convert());
+$syllables = $syllable->convert();
+
+include_once 'index.html';
 
 
 

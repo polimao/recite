@@ -2,18 +2,27 @@
 <html lang="en">
 <head>
 	<meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
-	<title>Document</title>
+	<title>Recite</title>
 
 </head>
 <body>
-	<audio src="storage/dǎo.wav" gap=test></audio>
+
+<?php
+foreach($syllables as $syllable){
+    if(!(int)$syllable)
+        echo '<audio src="storage/' . $syllable . '.wav" ';
+    else
+        echo "gap=" . $syllable . "></audio>\n";
+}
+?>
+<!-- 	<audio src="storage/dǎo.wav" gap=test></audio>
 	<audio src="storage/gān.wav"></audio>
 	<audio src="storage/he.wav"></audio>
 	<audio src="storage/jì.wav"></audio>
 	<audio src="storage/mì.wav"></audio>
 	<audio src="storage/qián.wav"></audio>
 	<audio src="storage/qí.wav"></audio>
-	<audio src="storage/qíng.wav"></audio>
+	<audio src="storage/qíng.wav"></audio> -->
 
 	<script>
 		var audios = document.getElementsByTagName("audio");
@@ -39,10 +48,7 @@
 
 		}
 
-
-		    	player(0);
-
-
+    	player(0);
 	</script>
 </body>
 </html>
