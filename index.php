@@ -1,6 +1,19 @@
 <?php
 
 require 'vendor/autoload.php';
+$dirs = scandir('storage/');
+// $file_name = mb_convert_encoding('storage/dǎo.dǎo123qwe', "UTF-8", "auto");
+// echo $file_name;
+// file_put_contents($file_name, 'd o');
+// $num = 0;
+// foreach ($dirs as $key => $file) {
+//     if(is_file('storage/' . $file)){   
+//         rename('storage/' . $file, 'storage/' . 'a' . $num . '.wav');
+//         $num++;
+//     }
+
+// }
+// dd($dirs);
 
 use Overtrue\Pinyin\Pinyin;
 
@@ -129,16 +142,34 @@ class Syllable{
 
 $syllable = new Syllable("
         吃葡萄不吐葡萄皮,不吃葡萄倒吐葡萄皮
-        你为什么不快乐？
-        大部分人肯定会耸耸肩说：“没钱呗！”
-        可是你有钱就会变得快乐吗？
-        不见得，你现在肯定比上学时有钱，
-        可是你却不如那时候快乐。
-        那你究竟是为什么不快乐呢？
-        大哲学家罗素列出了9大原因。
         ");
+        // 你为什么不快乐？
+        // 大部分人肯定会耸耸肩说：“没钱呗！”
+        // 可是你有钱就会变得快乐吗？
+        // 不见得，你现在肯定比上学时有钱，
+        // 可是你却不如那时候快乐。
+        // 那你究竟是为什么不快乐呢？
+        // 大哲学家罗素列出了9大原因。
 
 $syllables = $syllable->convert();
+dd($syllables);
+
+$tmp = [
+  "chī" => 0,
+  "pú" => 5,
+  "táo" => 9,
+  "bù" => 15,
+  "tǔ" => 18,
+  "pí" => 21,
+  "dào" => 27,
+];
+
+foreach ($syllables as $key => &$syllable) {
+    if(isset($tmp[$syllable]))
+        $syllable = $tmp[$syllable];
+}
+
+
 
 include_once 'index.html';
 
