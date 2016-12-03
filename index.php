@@ -152,7 +152,7 @@ $syllable = new Syllable("
         // 大哲学家罗素列出了9大原因。
 
 $syllables = $syllable->convert();
-dd($syllables);
+// dd($syllables);
 
 $tmp = [
   "chī" => 0,
@@ -166,10 +166,10 @@ $tmp = [
 
 foreach ($syllables as $key => &$syllable) {
     if(isset($tmp[$syllable]))
-        $syllable = $tmp[$syllable];
+        $syllable = 'a' . $tmp[$syllable];
 }
 
-
+// dd($syllables);
 
 include_once 'index.html';
 
