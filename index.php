@@ -24,8 +24,8 @@ class Syllable{
     public $curl;
     public $pinyin;
 
-    public $sb0 = '1';
-    public $sb1 = '2';
+    public $sb0 = '3';
+    public $sb1 = '1';
     public $sb2 = '9';
 
     public function __construct($content = NULL)
@@ -156,12 +156,12 @@ $syllables = $syllable->convert();
 
 $tmp = [
   "chī" => 0,
-  "pú" => 5,
-  "táo" => 9,
-  "bù" => 15,
-  "tǔ" => 18,
-  "pí" => 21,
-  "dào" => 27,
+  "pú" => 23,
+  "táo" => 27,
+  "bù" => 7,
+  "tǔ" => 10,
+  "pí" => 14,
+  "dào" => 20,
 ];
 
 foreach ($syllables as $key => &$syllable) {

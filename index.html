@@ -15,14 +15,7 @@ foreach($syllables as $syllable){
         echo "gap=" . $syllable . "></audio>\n";
 }
 ?>
-<!-- 	<audio src="storage/dǎo.wav" gap=test></audio>
-	<audio src="storage/gān.wav"></audio>
-	<audio src="storage/he.wav"></audio>
-	<audio src="storage/jì.wav"></audio>
-	<audio src="storage/mì.wav"></audio>
-	<audio src="storage/qián.wav"></audio>
-	<audio src="storage/qí.wav"></audio>
-	<audio src="storage/qíng.wav"></audio> -->
+></audio>
 
 	<script>
 		var audios = document.getElementsByTagName("audio");
@@ -42,7 +35,7 @@ foreach($syllables as $syllable){
 
 			    setTimeout(function(){
 			    	player(num)
-				},gap);
+				},gap*100);
 			    return;
 			}, false);
 
