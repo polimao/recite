@@ -24,7 +24,7 @@ class Syllable{
     public $curl;
     public $pinyin;
 
-    public $sb0 = '3';
+    public $sb0 = '5';
     public $sb1 = '1';
     public $sb2 = '9';
 
@@ -44,6 +44,7 @@ class Syllable{
   // 1 => "不吃"
   // 2 => "葡萄皮"
   // ]
+        dd($this->dick);
         $fragments = $this->getFragment();
 // array[
 //   0 => "吃葡萄不吐葡萄皮9"
@@ -105,7 +106,7 @@ class Syllable{
     {
         $url = "www.pullword.com/process.php";
         $param = array(
-                "param1" => "0.9",
+                "param1" => "0.3",
                 "param2" => "0",
                 "source" => $this->content,
             );
@@ -115,9 +116,12 @@ class Syllable{
 
         $dick = explode("\r\n",$res);
 
-        $dick = array_slice($dick,15);
+        $dick = array_slice($dick,16);
+dd($dick);
+        $dick = array_filter($dick);
 
-        $this->dick = array_filter($dick);
+        $this->dick = $this->filteRepeat($dick);
+dd($this->dick);
     }
 
     /** 删除类似 葡萄 葡萄皮中的葡萄 */
@@ -141,7 +145,7 @@ class Syllable{
 
 
 $syllable = new Syllable("
-        吃葡萄不吐葡萄皮,不吃葡萄倒吐葡萄皮
+        吃不吃葡萄
         ");
         // 你为什么不快乐？
         // 大部分人肯定会耸耸肩说：“没钱呗！”
@@ -152,7 +156,7 @@ $syllable = new Syllable("
         // 大哲学家罗素列出了9大原因。
 
 $syllables = $syllable->convert();
-// dd($syllables);
+dd($syllables);
 
 $tmp = [
   "chī" => 0,
@@ -169,7 +173,7 @@ foreach ($syllables as $key => &$syllable) {
         $syllable = 'a' . $tmp[$syllable];
 }
 
-// dd($syllables);
+dd($syllables);
 
 include_once 'index.html';
 
