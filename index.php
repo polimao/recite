@@ -1,19 +1,19 @@
 <?php
 
 require 'vendor/autoload.php';
-$dirs = scandir('C:\Users\Administrator\Desktop\syllables\d-z');
+// $dirs = scandir('C:\Users\Administrator\Desktop\syll/ables\d-z');
 // $file_name = mb_convert_encoding('storage/dǎo.dǎo123qwe', "UTF-8", "auto");
 // echo $file_name;
 // file_put_contents($file_name, 'd o');
 // $num = 0;
-foreach ($dirs as $key => $file) {
-    if(is_file('C:\Users\Administrator\Desktop\syllables\d-z/' . $file)){   
-        $num = $key + 191; 
-        rename('C:\Users\Administrator\Desktop\syllables\d-z/' . $file, 'storage/' . 'recite' . $num . '.mp3');
-    }
-}
-// dd($dirs);
-die();
+// foreach ($dirs as $key => $file) {
+//     if(is_file('C:\Users\Administrator\Desktop\syllables\d-z/' . $file)){   
+//         $num = $key + 191; 
+//         rename('C:\Users\Administrator\Desktop\syllables\d-z/' . $file, 'storage/' . 'recite' . $num . '.mp3');
+//     }
+// }
+// // dd($dirs);
+// die();
 
 use Overtrue\Pinyin\Pinyin;
 
@@ -146,14 +146,14 @@ dd($this->dick);
 
 $syllable = new Syllable("
         吃不吃葡萄
+        你为什么不快乐？
+        大部分人肯定会耸耸肩说：“没钱呗！”
+        可是你有钱就会变得快乐吗？
+        不见得，你现在肯定比上学时有钱，
+        可是你却不如那时候快乐。
+        那你究竟是为什么不快乐呢？
+        大哲学家罗素列出了9大原因。
         ");
-        // 你为什么不快乐？
-        // 大部分人肯定会耸耸肩说：“没钱呗！”
-        // 可是你有钱就会变得快乐吗？
-        // 不见得，你现在肯定比上学时有钱，
-        // 可是你却不如那时候快乐。
-        // 那你究竟是为什么不快乐呢？
-        // 大哲学家罗素列出了9大原因。
 
 $syllables = $syllable->convert();
 dd($syllables);
@@ -178,10 +178,53 @@ foreach ($syllables as $key => &$syllable) {
 
 dd($syllables);
 
-include_once 'index.html';
+?>
 
 
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+  <title>Recite</title>
 
+</head>
+<body>
 
+<?php
+foreach($syllables as $syllable){
+    if(!(int)$syllable)
+        echo '<audio src="storage/' . $syllable . '.mp3" ';
+    else
+        echo "gap=" . $syllable . "></audio>\n";
+}
+?>
+></audio>
 
+  <script>
+      var audios = document.getElementsByTagName("audio");
 
+      function player(num){
+          if(audios[num] == undefined)
+              return;
+          audios[num].play();
+          audios[num].loop = false;
+          console.log(audios[num]);
+          audios[num].addEventListener('ended', function () {
+              var gap = audios[num].getAttribute('gap');
+              if(!gap)
+                  gap = 0;
+              console.log('num:' + num + '  |  ' + 'gap:' + gap);
+              num++;
+
+              setTimeout(function(){
+                  player(num)
+              },gap*10);
+              return;
+          }, false);
+
+      }
+
+      player(0);
+  </script>
+</body>
+</html> 

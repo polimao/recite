@@ -407,4 +407,6 @@ return ['ā','á','ǎ','à',
 'zuān','zuǎn','zuàn',
 'zuī','zuǐ','zuì',
 'zūn','zǔn','zùn,',
-'zuō','zuó','zuǒ','zuò'];
+'zuō','zuó','zuǒ','zuò',
+'bei','ma','le','ne','me'
+];
