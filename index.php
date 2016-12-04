@@ -1,19 +1,19 @@
 <?php
 
 require 'vendor/autoload.php';
-$dirs = scandir('storage/');
+$dirs = scandir('C:\Users\Administrator\Desktop\syllables\d-z');
 // $file_name = mb_convert_encoding('storage/dǎo.dǎo123qwe', "UTF-8", "auto");
 // echo $file_name;
 // file_put_contents($file_name, 'd o');
 // $num = 0;
-// foreach ($dirs as $key => $file) {
-//     if(is_file('storage/' . $file)){   
-//         rename('storage/' . $file, 'storage/' . 'a' . $num . '.wav');
-//         $num++;
-//     }
-
-// }
+foreach ($dirs as $key => $file) {
+    if(is_file('C:\Users\Administrator\Desktop\syllables\d-z/' . $file)){   
+        $num = $key + 191; 
+        rename('C:\Users\Administrator\Desktop\syllables\d-z/' . $file, 'storage/' . 'recite' . $num . '.mp3');
+    }
+}
 // dd($dirs);
+die();
 
 use Overtrue\Pinyin\Pinyin;
 
@@ -158,19 +158,22 @@ $syllable = new Syllable("
 $syllables = $syllable->convert();
 dd($syllables);
 
-$tmp = [
-  "chī" => 0,
-  "pú" => 23,
-  "táo" => 27,
-  "bù" => 7,
-  "tǔ" => 10,
-  "pí" => 14,
-  "dào" => 20,
-];
+$sy_arr = include('sy_arr.php');
+$sy_arr = array_flip($sy_arr);
+dd($sy_arr);
+// $sy_arr = [
+//   "chī" => 0,
+//   "pú" => 23,
+//   "táo" => 27,
+//   "bù" => 7,
+//   "tǔ" => 10,
+//   "pí" => 14,
+//   "dào" => 20,
+// ];
 
 foreach ($syllables as $key => &$syllable) {
-    if(isset($tmp[$syllable]))
-        $syllable = 'a' . $tmp[$syllable];
+    if(isset($sy_arr[$syllable]))
+        $syllable = 'recite' . $sy_arr[$syllable];
 }
 
 dd($syllables);
