@@ -1,19 +1,21 @@
 <?php
 
 require 'vendor/autoload.php';
-// $dirs = scandir('C:\Users\Administrator\Desktop\syll/ables\d-z');
+$dirs = scandir('storage/');
 // $file_name = mb_convert_encoding('storage/dǎo.dǎo123qwe', "UTF-8", "auto");
 // echo $file_name;
 // file_put_contents($file_name, 'd o');
 // $num = 0;
-// foreach ($dirs as $key => $file) {
-//     if(is_file('C:\Users\Administrator\Desktop\syllables\d-z/' . $file)){   
-//         $num = $key + 191; 
-//         rename('C:\Users\Administrator\Desktop\syllables\d-z/' . $file, 'storage/' . 'recite' . $num . '.mp3');
-//     }
-// }
-// // dd($dirs);
-// die();
+foreach ($dirs as $key => $file) {
+    if(is_file('storage/' . $file)){   
+        // $num = $key + 191; 
+        $num = (int)ltrim($file,'recite') - 2;
+        if($num >=191)
+        rename('storage/' . $file, 'storage/' . 'recite' . $num . '.mp3');
+    }
+}
+// dd($dirs);
+die();
 
 use Overtrue\Pinyin\Pinyin;
 
@@ -146,21 +148,21 @@ dd($this->dick);
 
 $syllable = new Syllable("
         吃不吃葡萄
-        你为什么不快乐？
-        大部分人肯定会耸耸肩说：“没钱呗！”
-        可是你有钱就会变得快乐吗？
-        不见得，你现在肯定比上学时有钱，
-        可是你却不如那时候快乐。
-        那你究竟是为什么不快乐呢？
-        大哲学家罗素列出了9大原因。
         ");
+        // 你为什么不快乐？
+        // 大部分人肯定会耸耸肩说：“没钱呗！”
+        // 可是你有钱就会变得快乐吗？
+        // 不见得，你现在肯定比上学时有钱，
+        // 可是你却不如那时候快乐。
+        // 那你究竟是为什么不快乐呢？
+        // 大哲学家罗素列出了9大原因。
 
 $syllables = $syllable->convert();
 dd($syllables);
 
 $sy_arr = include('sy_arr.php');
 $sy_arr = array_flip($sy_arr);
-dd($sy_arr);
+// dd($sy_arr);
 // $sy_arr = [
 //   "chī" => 0,
 //   "pú" => 23,
