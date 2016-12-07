@@ -1,21 +1,21 @@
 <?php
 
 require 'vendor/autoload.php';
-$dirs = scandir('storage/');
+//$dirs = scandir('storage/');
 // $file_name = mb_convert_encoding('storage/dǎo.dǎo123qwe', "UTF-8", "auto");
 // echo $file_name;
 // file_put_contents($file_name, 'd o');
 // $num = 0;
-foreach ($dirs as $key => $file) {
-    if(is_file('storage/' . $file)){   
-        // $num = $key + 191; 
-        $num = (int)ltrim($file,'recite') - 2;
-        if($num >=191)
-        rename('storage/' . $file, 'storage/' . 'recite' . $num . '.mp3');
-    }
-}
+//foreach ($dirs as $key => $file) {
+  //  if(is_file('storage/' . $file)){
+    //    // $num = $key + 191;
+      //  $num = (int)ltrim($file,'recite') - 2;
+        //if($num >=191)
+        //rename('storage/' . $file, 'storage/' . 'recite' . $num . '.mp3');
+    //}
+//}
 // dd($dirs);
-die();
+//die();
 
 use Overtrue\Pinyin\Pinyin;
 
@@ -108,7 +108,7 @@ class Syllable{
     {
         $url = "www.pullword.com/process.php";
         $param = array(
-                "param1" => "0.3",
+                "param1" => "0.8",
                 "param2" => "0",
                 "source" => $this->content,
             );
@@ -146,9 +146,9 @@ dd($this->dick);
 }
 
 
-$syllable = new Syllable("
-        吃不吃葡萄
-        ");
+$syllable = new Syllable($_GET['content']);
+       // 吃不吃葡萄
+        //");
         // 你为什么不快乐？
         // 大部分人肯定会耸耸肩说：“没钱呗！”
         // 可是你有钱就会变得快乐吗？
@@ -229,4 +229,54 @@ foreach($syllables as $syllable){
       player(0);
   </script>
 </body>
-</html> 
+</html>
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>JS Bin</title>
+</head>
+<body>
+<script src="https://code.jquery.com/jquery-3.1.0.js"></script>
+
+  <div id="test">
+    <div id="banner" >李貌</div>
+  </div>
+<script>
+$('#test').on('mousemove', function(e){
+
+  var offset = $('#test').offset()
+
+  var x = e.pageX - offset.left
+  var y = e.pageY - offset.top
+
+
+  var centerX = $('#test').outerWidth() /2
+  var centerY = $('#test').outerHeight() /2
+
+  var deltaX = x - centerX
+  var deltaY = y - centerY
+
+  var percentX = deltaX / centerX
+  var percentY = deltaY / centerY
+
+  var deg = 10
+
+
+
+  $('#banner').css({
+    transform: 'rotateX('+deg*-percentY + 'deg)'+
+    ' rotateY('+deg*percentX+'deg)'
+  })
+})
+
+$('#test').on('mouseleave', function(){
+  $('#banner').css({
+    transform: ''
+  })
+})
+</script>
+</body>
+</html>
